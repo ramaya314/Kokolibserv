@@ -3,19 +3,23 @@ var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var fs = require('fs');
 var readline = require('readline');
-var googleAuthorizer = require('./googleAuthorizer.js');
+var googleAuthorizer = require('../googleAuthorizer.js');
 
-var bloggerProvider = function (blogId) {
+var bloggerProvider = function (blogId, clientSecretFilePath, tokenPath) {
 
 	var blogId = blogId;
+
+	if(!clientSecretFilePath || clientSecretFilePath.length <= 0 ||
+		!tokenPath || tokenPath.length <= 0)
+		throw new exception("Wrong arguments for blogger provider");
 
 	var blog = google.blogger('v3');
 
 	var module = {};
 
 	var authorizer = new googleAuthorizer({
-		clientSecretFilePath: 'keys/bloggercs.json',
-		tokenPath: 'keys/bloggertoken.json',
+		clientSecretFilePath: clientSecretFilePath,
+		tokenPath: tokenPath,
 		scopes: ['https://www.googleapis.com/auth/blogger'],
 	});
 
@@ -28,10 +32,10 @@ var bloggerProvider = function (blogId) {
 				blogId: blogId
 			};
 
-			if(parameters.maxResults !== null && parameters.maxResults.length > 0) 
+			if(parameters.maxResults && parameters.maxResults !== null && parameters.maxResults.length > 0) 
 				options.maxResults = parameters.maxResults;
 
-			if(parameters.pageToken !== null && parameters.pageToken.length > 0) 
+			if(parameters.pageToken && parameters.pageToken !== null && parameters.pageToken.length > 0) 
 				options.pageToken = parameters.pageToken;
 
 			blog.posts.list(options,  

@@ -9,11 +9,13 @@ import mailProvider from './providers/mailProvider';
 import eventbriteProvider from './providers/eventbriteProvider';
 import googleSheetsProvider from './providers/googleSheetsProvider';
 import picasaProvider from './providers/picasaProvider';
+import bloggerProvider from './providers/bloggerProvider';
 
 
 module.exports = {
   mailProvider,
   eventbriteProvider,
   googleSheetsProvider,
-  picasaProvider
+  picasaProvider,
+  bloggerProvider
 }
