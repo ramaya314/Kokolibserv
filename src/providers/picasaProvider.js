@@ -12,7 +12,7 @@ const Picasa = require('./picasa/picasa.js');
 //The picasa module has been extracted from the node_modules folder
 //to the /server/picasa folder to prevent overwrite of the hack that provides the album thumbnail.
 
-var picasaProvider = function (clientSecretFilePath, tokenPath) {
+var picasaProvider = function (clientSecretFilePath, tokenPath, blackList) {
 
 	if(!clientSecretFilePath || clientSecretFilePath.length <= 0 ||
 		!tokenPath || tokenPath.length <= 0)
@@ -26,7 +26,7 @@ var picasaProvider = function (clientSecretFilePath, tokenPath) {
 		scopes: ['https://picasaweb.google.com/data/'],
 	});
 
-	const blackList = [
+	const defaultBlackList = [
 		'Auto Backup',
 		'Profile Photos',
 		'Scrapbook Photos',
@@ -34,6 +34,12 @@ var picasaProvider = function (clientSecretFilePath, tokenPath) {
 		'2014-10-28',
 		'2013-10-22'
 	];
+
+	if(blackList && blackList != null){
+		blackList =	defaultBlackList.concat(blackList)
+	} else blackList = defaultBlackList; 
+
+
 
 	var module = {};
 
