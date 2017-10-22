@@ -22,16 +22,7 @@ var mailProvider = function (transporter) {
 
     var templateContents = template === defaultMailTemplate ? defaultMailTemplate : null;
 
-    console.log(template);
-    console.log("\n\n")
-    console.log(defaultMailTemplate);
-
-    console.log("\n\n")
-    console.log(templateContents);
-
     var sendTheMail = function() {
-
-      console.log(message);
 
       message.mailBody = message.mailBody.replace(/(?:\r\n|\r|\n)/g, '<br />');
       
