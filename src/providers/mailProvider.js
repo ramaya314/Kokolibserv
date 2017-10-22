@@ -13,7 +13,7 @@ var mailProvider = function (transporter) {
   var module = {};
 
   module.sendDefaultContactMail = function(message, onSuccess, onError) {
-    this.sendMail(message, transporter, defaultMailTemplate, onSuccess, onError);
+    this.sendMail(message, defaultMailTemplate, onSuccess, onError);
   }
 
   module.sendMail = function(message, template, onSuccess, onError) {
@@ -21,6 +21,13 @@ var mailProvider = function (transporter) {
     var hasTemplate = template && template != null && template.length > 0;
 
     var templateContents = template === defaultMailTemplate ? defaultMailTemplate : null;
+
+    console.log(template);
+    console.log("\n\n")
+    console.log(defaultMailTemplate);
+
+    console.log("\n\n")
+    console.log(templateContents);
 
     var sendTheMail = function() {
 

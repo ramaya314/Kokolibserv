@@ -53,6 +53,29 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 
 	}
 
+	module.clearRange = function(spreadSheetId, range, onSuccess, onError) {
+
+		authorizer.authorizeForCallback(function(auth) {
+			var request = {
+				// The ID of the spreadsheet to update.
+				spreadsheetId: spreadSheetId,
+				// The A1 notation of the values to clear.
+				range: range,
+				auth: auth,
+			};
+
+			sheets.spreadsheets.values.clear(request, function(err, response) {
+				if (err) {
+					onError && onError(err);
+					return;
+				}
+
+				onSuccess && onSuccess(response);
+			});
+		}, onError);
+	}
+
+
 	module.signDACAPetition = function(spreadSheetId, signeeInfo, onSuccess, onError) {
 
 		function sendUniqueSignature() {
@@ -226,6 +249,60 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 	}
 
 
+	module.batchEventbriteUndocuAllyData = function(spreadSheetId, data, onSuccess, onError) {
+
+		function writeTheData(auth) {
+			var requests = [];
+			var rows = [];
+
+			for(var i = 0; i < data.length; i++) {
+				var attendees = data[i].attendees.attendees;
+				var eventDate = dateFormat(new Date(data[i].start.utc), "mm/dd/yyyy")
+				for(var j = 0; j < attendees.length; j++) {
+					rows.push({
+							values: [{
+								userEnteredValue: {stringValue: eventDate}
+							}, {
+								userEnteredValue: {stringValue: attendees[j].profile.first_name}
+							}, {
+								userEnteredValue: {stringValue: attendees[j].profile.last_name}
+							}, {
+								userEnteredValue: {stringValue: attendees[j].profile.email}
+							}]
+						}
+					);
+				}
+
+				//empty row
+				rows.push({values: [{userEnteredValue: {stringValue: ""}}]});
+			}
+
+			requests.push({
+				appendCells: {
+					rows: rows,
+					fields: 'userEnteredValue'
+				}
+			});
+
+			var batchUpdateRequest = {requests: requests}
+
+			sheets.spreadsheets.batchUpdate({
+				auth: auth,
+				spreadsheetId: spreadSheetId,
+				resource: batchUpdateRequest
+			}, function(err, response) {
+				if(err) {
+					// Handle error
+					onError && onError(err);
+					return;
+				}
+				onSuccess && onSuccess(response);
+			});
+		}
+
+
+		authorizer.authorizeForCallback(writeTheData, onError);
+	}
 
 
 	return module;
