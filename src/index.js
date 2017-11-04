@@ -10,6 +10,7 @@ import eventbriteProvider from './providers/eventbriteProvider';
 import googleSheetsProvider from './providers/googleSheetsProvider';
 import picasaProvider from './providers/picasaProvider';
 import bloggerProvider from './providers/bloggerProvider';
+import facebookProvider from './providers/facebookProvider';
 
 
 module.exports = {
@@ -17,5 +18,6 @@ module.exports = {
   eventbriteProvider,
   googleSheetsProvider,
   picasaProvider,
-  bloggerProvider
+  bloggerProvider,
+  facebookProvider
 }
