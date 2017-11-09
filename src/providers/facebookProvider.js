@@ -55,6 +55,18 @@ var facebookProvider = function (options) {
 		
 	}
 
+	module.getLiveStream = function(onSuccess, onError)  {
+		
+		graph.get(that.options.entityId + "/live_videos?fields=embed_html,id,status,description,broadcast_start_time", function(err, resp) {
+			if(err) {
+				onError && onError(err);
+				return;
+			}
+			onSuccess && onSuccess(resp);
+		});
+		
+	}
+
 	module.getSingleEvent = function(eventId, onSuccess, onError)  {
 		
 		graph.get(eventId, function(err, resp) {
