@@ -8,7 +8,7 @@ var defaultMailTemplate = require('./defaultMailTemplate.js');
 var mailProvider = function (transporter) {
 
   if(!transporter || transporter === null)
-    throw new exception("No transporter passed to mail provider!");
+    throw new Error("No transporter passed to mail provider!");
 
   var module = {};
 

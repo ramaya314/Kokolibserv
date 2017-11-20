@@ -11,6 +11,8 @@ import googleSheetsProvider from './providers/googleSheetsProvider';
 import picasaProvider from './providers/picasaProvider';
 import bloggerProvider from './providers/bloggerProvider';
 import facebookProvider from './providers/facebookProvider';
+import KokoServer from './server';
+import providerFactory from './server/providerFactory';
 
 
 module.exports = {
@@ -19,5 +21,7 @@ module.exports = {
   googleSheetsProvider,
   picasaProvider,
   bloggerProvider,
-  facebookProvider
+  facebookProvider,
+  providerFactory,
+  KokoServer
 }

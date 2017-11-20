@@ -16,7 +16,7 @@ var picasaProvider = function (clientSecretFilePath, tokenPath, blackList) {
 
 	if(!clientSecretFilePath || clientSecretFilePath.length <= 0 ||
 		!tokenPath || tokenPath.length <= 0)
-		throw new exception("Wrong arguments for picasa provider");
+		throw new Error("Wrong arguments for picasa provider");
 
 	const picasa = new Picasa();
 

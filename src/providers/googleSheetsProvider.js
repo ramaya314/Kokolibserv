@@ -9,18 +9,16 @@ var dateFormat = require('dateformat');
 
 var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 
-	var spreadSheetId = spreadSheetId;
-
 	if(!clientSecretFilePath || clientSecretFilePath.length <= 0 ||
 		!tokenPath || tokenPath.length <= 0)
-		throw new exception("Wrong arguments for sheets provider");
+		throw new Error("Wrong arguments for sheets provider");
 
 	var sheets = google.sheets('v4');
 	
 	var authorizer = new googleAuthorizer({
 		clientSecretFilePath: clientSecretFilePath,
 		tokenPath: tokenPath,
-		scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+		scopes: ['https://www.googleapis.com/auth/spreadsheets']
 	});
 
 	var module = {};

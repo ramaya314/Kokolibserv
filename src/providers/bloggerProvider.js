@@ -11,7 +11,7 @@ var bloggerProvider = function (blogId, clientSecretFilePath, tokenPath) {
 
 	if(!clientSecretFilePath || clientSecretFilePath.length <= 0 ||
 		!tokenPath || tokenPath.length <= 0)
-		throw new exception("Wrong arguments for blogger provider");
+		throw new Error("Wrong arguments for blogger provider");
 
 	var blog = google.blogger('v3');
 
