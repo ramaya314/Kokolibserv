@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const {MainApi} = require('../api')
 const providerFactory = require('../providerFactory');
+const MetaInspector = require('node-metainspector');
 
 module.exports = function(config) {
 
@@ -139,6 +140,32 @@ module.exports = function(config) {
 		if(providers.driveProvider) {
 		}
 	}
+
+	router.get('/v1/GetPageMeta', (req, res) => {
+		var url = req.query.url;
+
+		if(!url || url.length <= 0)
+			res.status(500).end(url + " Meta Fetch Fail!: " + err);
+
+
+		var client = new MetaInspector(url, { timeout: 5000 });
+
+		client.on("fetch", function(){
+			var result = {
+				title: client.ogTitle,
+				description: client.ogDescription,
+				image: client.image
+			};
+			res.end(JSON.stringify(result));
+		});
+
+		client.on("error", function(err){
+			res.status(500).end(url + " Meta Fetch Fail!: " + err);
+			console.info(err);
+		});
+
+		client.fetch();
+	});
 
 	router.get('/', async function(req, res, next) {
 	  const db = new MainApi()
