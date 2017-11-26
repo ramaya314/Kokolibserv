@@ -1,6 +1,6 @@
 {
   "name": "kokolibserv",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Server component library",
   "main": "build/index.js",
   "devDependencies": {
@@ -40,9 +40,6 @@
     "request": "^2.79.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
     "webpackBuild": "webpack --progress --colors --p",
     "transpile": "node_modules/.bin/ babel ./src/index.js --presets babel-preset-env --out-file lib/index.js",
     "build": "babel src -d build",
