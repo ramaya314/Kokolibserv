@@ -66,19 +66,23 @@ var serverAppFactory = function(config) {
     // Setup logger
     app.use(morgan('combined'));
 
-    app.use('/', index(config));
-
-    // Serve static assets
+    //Static assets
     app.use(express.static(config.staticAssetsLocation));
 
+    //API
     app.use('/api', api(config));
-
     if(config.apiExpansion) {
       app.use('/api', config.apiExpansion(config));
     }
 
+
+
+    //Site navigation
+    app.use('/', index(config));
+
+
     // Always return the main index.html, so react-router render the route in the client
-    app.use('/', new universalLoader(config));
+    //app.use('/', new universalLoader(config));
 
     return app;
   }
