@@ -27,7 +27,7 @@ module.exports = function(config) {
 		if(config.google.blogger)
 			providers.bloggerProvider = new bloggerProvider(config.google.blogger.blogId, config.google.clientSecretLocation, config.google.blogger.tokenPath);
 		if(config.google.photos) 
-			providers.picasaProvider = new picasaProvider(config.google.clientSecretLocation, config.google.photos.tokenPath);
+			providers.picasaProvider = new picasaProvider(config.google.clientSecretLocation, config.google.photos.tokenPath, config.google.photos.blackList);
 		if(config.google.sheets)
 			providers.sheetsProvider = new googleSheetsProvider(config.google.clientSecretLocation, config.google.sheets.tokenPath);
 		if(config.google.drive)
