@@ -74,8 +74,9 @@ var picasaProvider = function (clientSecretFilePath, tokenPath, blackList) {
 							continue;
 						}
 
+
 						for(var j = 0; j < blackList.length; j++) {
-							if(blackList[j].toLowerCase() === album.title.toLowerCase()) {
+							if(blackList[j].trim().toLowerCase() === album.title.trim().toLowerCase()) {
 								albums.splice(albums.indexOf(album), 1);
 								i--;
 								l--;
