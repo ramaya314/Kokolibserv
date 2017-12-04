@@ -151,6 +151,8 @@ module.exports = function(config) {
 		var client = new MetaInspector(url, { timeout: 5000 });
 
 		client.on("fetch", function(){
+			//console.log("\n\n\n================\n===============\n===============");
+			//console.log(client);
 			var result = {
 				title: client.ogTitle,
 				description: client.ogDescription,
