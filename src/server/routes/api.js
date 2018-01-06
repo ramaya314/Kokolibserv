@@ -69,6 +69,17 @@ module.exports = function(config) {
 
 		}
 
+		if(providers.instagramProvider) {
+			router.get('/v1/GetInstagramFeed', (req, res) => {
+			  providers.instagramProvider.getFeed(function(data) {
+			    res.json(data);
+			  }, function(err) {
+			    console.info(err);
+			    res.status(500).end("instagram fetch fail!: " + err);
+			  });
+			});
+		}
+
 		if(providers.eventbriteProvider) {
 
 			router.get('/v1/GetEventbriteEvents', (req, res) => {
