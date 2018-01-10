@@ -1,6 +1,6 @@
 {
   "name": "kokolibserv",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Server component library",
   "main": "build/index.js",
   "devDependencies": {
