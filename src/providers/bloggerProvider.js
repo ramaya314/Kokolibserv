@@ -32,10 +32,10 @@ var bloggerProvider = function (blogId, clientSecretFilePath, tokenPath) {
 				blogId: blogId
 			};
 
-			if(parameters.maxResults && parameters.maxResults !== null && parameters.maxResults.length > 0) 
+			if(parameters && parameters.maxResults && parameters.maxResults !== null && parameters.maxResults.length > 0) 
 				options.maxResults = parameters.maxResults;
 
-			if(parameters.pageToken && parameters.pageToken !== null && parameters.pageToken.length > 0) 
+			if(parameters && parameters.pageToken && parameters.pageToken !== null && parameters.pageToken.length > 0) 
 				options.pageToken = parameters.pageToken;
 
 			blog.posts.list(options,  

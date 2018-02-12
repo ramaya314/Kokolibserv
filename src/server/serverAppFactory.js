@@ -36,12 +36,13 @@ var serverAppFactory = function(config) {
 
     // routes
     const index = require('./routes/index');
-    const api = require('./routes/api');
+    const webServicesApi = require('./routes/api');
     const universalLoader = require('./universal');
 
     // App setup
     const app = express();
 
+    //COORS config
     app.use(function(req, res, next) {
       var allowedOrigins = [
         "http://localhost:3000"
@@ -56,23 +57,26 @@ var serverAppFactory = function(config) {
       return next();
     });
 
+    //MIDDLEWARE
+    //=============
     // Support Gzip
     app.use(compression());
-
     // Support post requests with body data (doesn't support multipart, use multer)
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
-
     // Setup logger
-    app.use(morgan('combined'));
+    app.use(morgan('dev'));
+    //=============
 
+    //serve website
+    //index is simply a router using the universal loader
     app.use('/', index(config));
 
     // Serve static assets
     app.use(express.static(config.staticAssetsLocation));
 
-    app.use('/api', api(config));
-
+    //serve web services
+    app.use('/api', webServicesApi(config));
     if(config.apiExpansion) {
       app.use('/api', config.apiExpansion(config));
     }
