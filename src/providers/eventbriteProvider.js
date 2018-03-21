@@ -99,6 +99,12 @@ var eventbriteProvider = function (authToken) {
 				if(i < additionalOrganizers.length) {
 					api.search({"organizer.id": additionalOrganizers[i++]}, addUsersCallback);
 				} else {
+
+					//filter all draft events. these should never be visible to the client
+					aggregateData.events = aggregateData.events.filter(function(event, i) {
+						return event.status !== 'draft';
+					});
+
 					onSuccess && onSuccess(aggregateData);
 				}
 
@@ -112,6 +118,11 @@ var eventbriteProvider = function (authToken) {
 						aggregateData = data;
 						api.search({"organizer.id": parseInt(additionalOrganizers[i++], 10)}, addUsersCallback);
 					} else {
+						//filter all draft events. these should never be visible to the client
+						data.events = data.events.filter(function(event, i) {
+							return event.status !== 'draft';
+						});
+
 						onSuccess && onSuccess(data);
 					}
 				}
