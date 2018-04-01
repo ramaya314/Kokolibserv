@@ -75,6 +75,8 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 
 	module.sendDreamDonutFeedback = function(spreadSheetId, data, onSuccess, onError) {
 
+		console.log(data);
+
 		function sendResponse(auth) {
 			var requests = [];
 
@@ -85,29 +87,36 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 			var firstDate = new Date(1899,11,30);
 			var diffDays = Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay));
 
+			console.log("pushing content");
+
 			requests.push({
 				appendCells: {
 					//sheetId: 533344754,
-					rows: [{
-						values: [{
-							userEnteredValue: {numberValue: diffDays},
-							userEnteredFormat: {
-								numberFormat: {
-									type: "DATE_TIME",
-          							"pattern": "m/d/yyyy h:mm:ss"
-								}
-							} 
-						}, {
-							userEnteredValue: {stringValue: data.birthDate}
-						}, {
-							userEnteredValue: {stringValue: data.gotDonut}
-						}, {
-							userEnteredValue: {numberValue: data.satisfactionRating}
-						}]
-					}],
+					rows: [
+						{
+						values: [
+							{
+								userEnteredValue: {numberValue: diffDays},
+								userEnteredFormat: {
+									numberFormat: {
+										type: "DATE_TIME",
+	          							"pattern": "m/d/yyyy h:mm:ss"
+									}
+								} 
+							}, {
+								userEnteredValue: {stringValue: data.birthDate}
+							}, {
+								userEnteredValue: {stringValue: data.gotDonut}
+							}, {
+								userEnteredValue: {numberValue: data.satisfactionRating}
+							}
+							]
+						}
+					],
 					fields: 'userEnteredValue'
 				}
 			});
+
 
 			var batchUpdateRequest = {requests: requests}
 
@@ -125,6 +134,7 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 			});
 		}
 
+			console.log("pushing content");
 		authorizer.authorizeForCallback(sendResponse, onError);
 	}
 
