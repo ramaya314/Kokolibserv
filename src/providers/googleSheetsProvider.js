@@ -75,7 +75,7 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 
 	module.sendDreamDonutFeedback = function(spreadSheetId, data, onSuccess, onError) {
 
-		function sendResponse() {
+		function sendResponse(auth) {
 			var requests = [];
 
 
