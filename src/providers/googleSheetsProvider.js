@@ -106,6 +106,8 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 							}, {
 								userEnteredValue: {stringValue: data.birthDate}
 							}, {
+								userEnteredValue: {stringValue: data.birthWeekDay}
+							}, {
 								userEnteredValue: {stringValue: data.gotDonut}
 							}, {
 								userEnteredValue: {numberValue: data.satisfactionRating}
