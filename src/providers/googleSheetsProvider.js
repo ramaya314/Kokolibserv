@@ -73,6 +73,61 @@ var googleSheetsProvider = function (clientSecretFilePath, tokenPath) {
 		}, onError);
 	}
 
+	module.sendDreamDonutFeedback = function(spreadSheetId, data, onSuccess, onError) {
+
+		function sendResponse() {
+			var requests = [];
+
+
+			var dateCreated = dateFormat(new Date(), "m/dd/yyyy h:MM:ss") + "";
+			var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+			var secondDate = new Date();
+			var firstDate = new Date(1899,11,30);
+			var diffDays = Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay));
+
+			requests.push({
+				appendCells: {
+					//sheetId: 533344754,
+					rows: [{
+						values: [{
+							userEnteredValue: {numberValue: diffDays},
+							userEnteredFormat: {
+								numberFormat: {
+									type: "DATE_TIME",
+          							"pattern": "m/d/yyyy h:mm:ss"
+								}
+							} 
+						}, {
+							userEnteredValue: {stringValue: data.birthDate}
+						}, {
+							userEnteredValue: {stringValue: data.gotDonut}
+						}, {
+							userEnteredValue: {numberValue: data.satisfactionRating}
+						}]
+					}],
+					fields: 'userEnteredValue'
+				}
+			});
+
+			var batchUpdateRequest = {requests: requests}
+
+			sheets.spreadsheets.batchUpdate({
+				auth: auth,
+				spreadsheetId: spreadSheetId,
+				resource: batchUpdateRequest
+			}, function(err, response) {
+				if(err) {
+					// Handle error
+					onError && onError(err);
+					return;
+				}
+				onSuccess && onSuccess(response);
+			});
+		}
+
+		authorizer.authorizeForCallback(sendResponse, onError);
+	}
+
 
 	module.signDACAPetition = function(spreadSheetId, signeeInfo, onSuccess, onError) {
 
