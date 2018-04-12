@@ -80,7 +80,7 @@ var facebookProvider = function (options) {
 	}
 
 	module.getEventPicture = function(eventId, onSuccess, onError) {
-		graph.get(eventId + "/picture?type=large", function(err, resp) {
+		graph.get(eventId + "?fields=cover", function(err, resp) {
 			if(err) {
 				onError && onError(err);
 				return;
