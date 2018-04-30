@@ -1,5 +1,6 @@
 
 require('babel-polyfill');
+
 const appFactory = require('./serverAppFactory');
 
 var KokoServer = function(config) {
@@ -49,4 +50,3 @@ var KokoServer = function(config) {
 
 
 module.exports = KokoServer;
-

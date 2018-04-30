@@ -18,7 +18,7 @@ var universalLoader = function(config) {
           protocol:req.protocol,
           hostname:os.hostname()
         }
-      }; 
+      };
       global.document = {createElement: function() {}};
     }
 
