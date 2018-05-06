@@ -25,7 +25,6 @@ var universalLoader = function(config) {
     const context = {data: {}, head: [], req}
     const store = config.storeConfigurator(initialStore || null);
 
-
     //render the app
     const markup = config.renderer(req, store, context)
 

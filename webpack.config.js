@@ -20,7 +20,7 @@ module.exports = {
                 test: /\.scss/,
                 loader: 'style-loader!css-loader!sass-loader'
             },
-            { 
+            {
                 test: /\.css$/,
                 loader: "style-loader!css-loader"
             },
@@ -38,6 +38,7 @@ module.exports = {
     resolve: {
         alias: {
             react: path.resolve('node_modules/react'),
+            async: path.resolve('node_modules/async')
         },
     },
     output: {

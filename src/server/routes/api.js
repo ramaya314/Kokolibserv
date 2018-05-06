@@ -1,8 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const {MainApi} = require('../api')
 const providerFactory = require('../providerFactory');
-const MetaInspector = require('node-metainspector');
+
+var MetaInspector = null;
+try{
+	 MetaInspector = require('node-metainspector');
+} catch(e) {
+	console.log("dependency error wile loading the node-metainspector. Meta inspection disabled:");
+	console.log(e);
+}
 
 module.exports = function(config) {
 
@@ -152,39 +158,36 @@ module.exports = function(config) {
 		}
 	}
 
-	router.get('/v1/GetPageMeta', (req, res) => {
-		var url = req.query.url;
+	if(MetaInspector != null) {
+		router.get('/v1/GetPageMeta', (req, res) => {
+			var url = req.query.url;
 
-		if(!url || url.length <= 0)
-			res.status(500).end(url + " Meta Fetch Fail!: " + err);
+			if(!url || url.length <= 0)
+				res.status(500).end(url + " Meta Fetch Fail!: " + err);
 
 
-		var client = new MetaInspector(url, { timeout: 5000 });
+			var client = new MetaInspector(url, { timeout: 5000 });
 
-		client.on("fetch", function(){
-			//console.log("\n\n\n================\n===============\n===============");
-			//console.log(client);
-			var result = {
-				title: client.ogTitle,
-				description: client.ogDescription,
-				image: client.image
-			};
-			res.end(JSON.stringify(result));
+			client.on("fetch", function(){
+				//console.log("\n\n\n================\n===============\n===============");
+				//console.log(client);
+				var result = {
+					title: client.ogTitle,
+					description: client.ogDescription,
+					image: client.image
+				};
+				res.end(JSON.stringify(result));
+			});
+
+			client.on("error", function(err){
+				res.status(500).end(url + " Meta Fetch Fail!: " + err);
+				console.info(err);
+			});
+
+			client.fetch();
 		});
+	}
 
-		client.on("error", function(err){
-			res.status(500).end(url + " Meta Fetch Fail!: " + err);
-			console.info(err);
-		});
-
-		client.fetch();
-	});
-
-	router.get('/', async function(req, res, next) {
-	  const db = new MainApi()
-	  const {text} = await db.getMain()
-	  res.json({text, message: 'This came from the api'})
-	})
 
 
 	return router;

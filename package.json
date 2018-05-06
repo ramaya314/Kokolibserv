@@ -1,6 +1,6 @@
 {
   "name": "kokolibserv",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Server component library",
   "main": "build/index.js",
   "devDependencies": {
@@ -50,7 +50,8 @@
     "build:watch": "babel src -w -d build",
     "lint": "eslint src/**; exit 0",
     "lint:watch": "esw -w src/**",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "test": "node  src/test.js"
   },
   "repository": {
     "type": "git",
