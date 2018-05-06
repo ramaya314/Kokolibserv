@@ -28,14 +28,16 @@ var universalLoader = function(config) {
     //render the app
     const markup = config.renderer(req, store, context)
 
-
     if (context.url) {
+              console.log("server renderrrrrrr 1");
       // Somewhere a `<Redirect>` was rendered
       res.redirect(301, context.url)
     } else {
+
       // we're good, add in markup, send the response
       const RenderedApp = htmlData.replace('{{SSR}}', markup)
                                   .replace('<meta-head/>', context.head)
+                                  .replace('<muicss/>', `<style>${context.muiCss}</style>`)
                                   .replace('{{data}}', new Buffer(JSON.stringify(store.getState())).toString('base64'))
 
       if (context.code)
