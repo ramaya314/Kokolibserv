@@ -36,12 +36,12 @@ var eventbriteProvider = function (authToken) {
 
 		try {
 			var callback = function (error, data) {
-				if (error) 
+				if (error)
 					onError && onError(error);
 				else {
-					api.get('venues', 
-						data.venue_id + "/", 
-						[], 
+					api.get('venues',
+						data.venue_id + "/",
+						[],
 						{'venue_id' : data.venue_id},
 						function(error, venueData) {
 							if (error) {
@@ -51,9 +51,9 @@ var eventbriteProvider = function (authToken) {
 
 							data.venue = venueData;
 
-							api.get('organizers', 
-								data.organizer_id + "/", 
-								[], 
+							api.get('organizers',
+								data.organizer_id + "/",
+								[],
 								{'organizer_id' : data.organizer_id},
 								function(error, organizerData) {
 									if (error)  {
@@ -72,7 +72,7 @@ var eventbriteProvider = function (authToken) {
 			api.event_details({event_id: eventId}, callback);
 
 		} catch (error) {
-			onError && onError(error); 
+			onError && onError(error);
 		}
 
 	}
@@ -92,7 +92,7 @@ var eventbriteProvider = function (authToken) {
 				if(error){
 					onError && onError(error);
 				} else {
-					if(userData && userData.events.length > 0) 
+					if(userData && userData.events.length > 0)
 						for(var j = 0, l = userData.events.length; j < l; j++)
 							aggregateData.events.push(userData.events[j]);
 				}
