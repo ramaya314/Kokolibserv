@@ -11,6 +11,8 @@ var universalLoader = function(config) {
   // this does most of the heavy lifting
   async function serverRender(req, res, htmlData, initialStore){
 
+    console.log(htmlData);
+
     //hack to temprorarly define browser globals on the serer
     if (!process.env.BROWSER) {
       global.window = {
@@ -34,10 +36,11 @@ var universalLoader = function(config) {
       res.redirect(301, context.url)
     } else {
 
+      console.log(context);
       // we're good, add in markup, send the response
       const RenderedApp = htmlData.replace('{{SSR}}', markup)
                                   .replace('<meta-head/>', context.head)
-                                  .replace('<muicss/>', `<style>${context.muiCss}</style>`)
+                                  .replace('<muicss/>', `<style id='server-side-styles' >${context.muiCss}</style>`)
                                   .replace('{{data}}', new Buffer(JSON.stringify(store.getState())).toString('base64'))
 
       if (context.code)
