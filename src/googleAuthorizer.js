@@ -115,9 +115,26 @@ var googleAuthorizer = function (options) {
 	*
 	* @param {Object} token The token to store to disk.
 	*/
-	function storeToken(token) {
-		fs.writeFile(options.tokenPath, JSON.stringify(token));
-		console.log('Token stored to ' + options.tokenPath);
+	function storeToken(token, tries = 0) {
+		if(tries > 10) {
+			console.log("token failed to write the allowed number of times. Token: \n" + token);
+			return;
+		}
+
+		fs.writeFile(options.tokenPath, JSON.stringify(token), function (err) {
+	    if (!err)
+	      fs.readFile(options.tokenPath, 'utf-8', function (err2, data) {
+	        if (!err2) {
+						try{
+								var tokenJson = JSON.parse(data);
+								console.log('Token correctly stored to ' + options.tokenPath);
+						} catch (e) {
+							console.log("Token json corrupted. Saving again. Token: \n" + tokenJson)
+							storeToken(token, ++tries);
+						}
+					}
+	      })
+	  });
 	}
 
 	return module;
