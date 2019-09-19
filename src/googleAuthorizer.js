@@ -50,12 +50,22 @@ var googleAuthorizer = function (options) {
 			if (err) {
 				getNewToken(oauth2Client, callback);
 			} else {
-				oauth2Client.credentials = JSON.parse(token);
+				var tokenError = false;
+				try {
+					oauth2Client.credentials = JSON.parse(token);
+				} catch(e) {
+					tokenError = true;
+				}
 
-				var expirationDate = new Date(oauth2Client.credentials.expiry_date);
+				var expirationDate = null;
 				var now = new Date(Date.now());
+				try {
+					expirationDate = new Date(oauth2Client.credentials.expiry_date);
+				} catch(e) {
+					tokenError = true;
+				}
 
-				if(expirationDate <= now) {
+				if(!expirationDate || expirationDate <= now || tokenError) {
 					console.log("Found expired credentials:\n");
 					console.log(oauth2Client.credentials);
 					console.log("Renewing...\n");
@@ -110,14 +120,21 @@ var googleAuthorizer = function (options) {
 		});
 	}
 
+	var storing = false;
 	/**
 	* Store token to disk be used in later program executions.
 	*
 	* @param {Object} token The token to store to disk.
 	*/
 	function storeToken(token, tries = 0) {
-		if(tries > 10) {
+		if(storing)
+			return;
+
+		storing = true;
+
+		if(tries > 30) {
 			console.log("token failed to write the allowed number of times. Token: \n" + token);
+			storing = false;
 			return;
 		}
 
@@ -128,8 +145,10 @@ var googleAuthorizer = function (options) {
 						try{
 								var tokenJson = JSON.parse(data);
 								console.log('Token correctly stored to ' + options.tokenPath);
+								storing = false;
 						} catch (e) {
 							console.log("Token json corrupted. Saving again. Token: \n" + tokenJson)
+							storing = false;
 							storeToken(token, ++tries);
 						}
 					}
